@@ -17,5 +17,7 @@ use Illuminate\Support\Facades\DB;
 */
 
 Route::get('/', [BookController::class, 'index']);
-Route::get('/book', [BersonController::class, 'add']);
+Route::get('/book', [BookController::class, 'add']);
 Route::post('/book', [BookController::class, 'create']);
+Route::get('/book/{book}', [BookController::class, 'delete']);
+Route::post('/book/{book}', [BookController::class, 'remove']);

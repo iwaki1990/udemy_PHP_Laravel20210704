@@ -37,8 +37,23 @@ class BookController extends Controller
             'name' => 'required|max:255',
         ]);
         $book = new Book;
-        $book->content = $request->name;
+        $book->title = $request->name;
         $book->save();
         return redirect('/');
     }
+    public function delete(Request $request)
+    {
+        $book = Book::index($request->title);
+        return view('delete',['form'=>$book]);
+    }
+
+    public function remove(Request $request)
+    {
+        Book::index($request->title)->delete();
+        return redirect('/');
+
+    }
+
+
+
 }
