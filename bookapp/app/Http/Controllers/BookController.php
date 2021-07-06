@@ -16,6 +16,7 @@ class BookController extends Controller
     }
 
 
+
     public function add(Request $request)
     {
         $rules = [
@@ -36,20 +37,37 @@ class BookController extends Controller
         $request->validate([
             'name' => 'required|max:255',
         ]);
-        $book = new Book;
-        $book->title = $request->name;
-        $book->save();
+        $books = new Book;
+        $books->title = $request->name;
+        $books->save();
         return redirect('/');
     }
+
+    public function find(Request $request)
+    {
+        return view('find', ['input' => '']);
+    }
+
+    
+    public function search(Request $request)
+    {
+        $books = Book::where('name', $request->input)->first();
+        $param = [
+            'input' => $request->input,
+            'book' => $books
+        ];
+        return view('find', $param);
+    }
+
     public function delete(Request $request)
     {
-        $book = Book::index($request->title);
-        return view('delete',['form'=>$book]);
+        $books = Book::find($request->title);
+        return view('delete',['form'=>$books]);
     }
 
     public function remove(Request $request)
     {
-        Book::index($request->title)->delete();
+        Book::find($request->title)->delete();
         return redirect('/');
 
     }
