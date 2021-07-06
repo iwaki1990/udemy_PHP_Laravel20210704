@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+@if (Auth::check())
+<p>USER: {{$user->name . ' (' . $user->email . ')'}}</p>
+@else
+<p>※ログインしていません。（<a href="/login">ログイン</a>｜
+   <a href="/register">登録</a>）</p>
+@endif
 	<div class="container">
 		<div class="col-sm-offset-2 col-sm-8">
 			<div class="panel panel-default">
@@ -57,14 +63,14 @@
 
 										<!-- Task Delete Button -->
 										<td>
-											<form action="/book/{{ $book->title }}" method="delete">
-												{{ csrf_field() }}
-												{{ method_field('DELETE') }}
+										<form action="/book/{{ $book->id }}" method="post">
+									{{ csrf_field() }}
+									{{ method_field('DELETE') }}
 
-												<button type="submit" class="btn btn-danger">
-													<i class="fa fa-trash"></i>削除
-												</button>
-											</form>
+									<button type="submit" class="btn btn-danger">
+										<i class="fa fa-trash"></i>削除
+									</button>
+								</form>
 										</td>
 									</tr>
 								@endforeach

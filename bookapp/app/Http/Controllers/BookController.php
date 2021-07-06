@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Book;
+use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
 {
@@ -13,6 +14,20 @@ class BookController extends Controller
         $books= Book::all();
         $books = DB::select('select * from books');
         return view('books',['books'=>$books]);
+        
+        {
+            $user = Auth::user();
+            if(!$request->sort) {
+                $sort = 'id';
+            } else {
+                $sort = $request->sort;
+            }
+            $books = Book::orderBy($sort, 'asc')->paginate(5);
+            $param = ['items' => $books, 'sort' => $sort, 'user' =>$user];
+            return view('index', $param);
+        }
+
+
     }
 
 
@@ -65,11 +80,10 @@ class BookController extends Controller
         return view('delete',['form'=>$books]);
     }
 
-    public function remove(Request $request)
+    public function remove( $id)
     {
-        Book::find($request->title)->delete();
+        Book::find($id)->delete();
         return redirect('/');
-
     }
 
 
